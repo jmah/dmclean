@@ -11,16 +11,21 @@ WHITESPACE_FILTER_REGEXP = %r{//\s+<dmclean.strip-whitespace: true>$}
 @group_header_if_error = nil
 @group_body_lines = []
 @pending_filter = @@default_filter
+@last_line_had_newline = false
 
 def begin_next_group(next_header, next_header_if_error, next_custom_filter)
   filtered = @pending_filter.call(@group_body_lines) rescue nil
 
   if filtered
     puts @@default_filter.call([@group_header]) if @group_header
-    filtered.each {|filtered| puts filtered }
   else
     puts @group_header_if_error
-    @@default_filter.call(@group_body_lines).each {|l| puts l }
+    filtered = @@default_filter.call(@group_body_lines)
+  end
+
+  filtered[0..-2].each {|line| puts line }
+  unless filtered.empty?
+    @last_line_had_newline ? puts(filtered.last) : print(filtered.last)
   end
 
   @group_header = next_header || ''
@@ -38,6 +43,7 @@ end
 begin
   while line_nl = gets
     line = line_nl.chomp
+    @last_line_had_newline = (line != line_nl)
     start_of_new_group = line.strip.empty?
     new_filter = nil
     error_header = nil
