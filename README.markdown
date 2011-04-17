@@ -36,7 +36,7 @@ I recommend storing the script in the repository where it's used. You can use a 
 
 Then add it as a filter in your config: (renormalizing on merges helps to reduce conflicts)
 
-    git config filter.dmclean.clean "git show $TAGNAME | ruby - %f"
+    git config filter.dmclean.clean "ruby \$(git unpack-file $TAGNAME)"
     git config merge.renormalize true
 
 And then activate it. For Objective-C files:

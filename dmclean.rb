@@ -30,6 +30,11 @@ def begin_next_group(next_header, next_header_if_error, next_custom_filter)
 end
 
 
+at_exit do
+  File.unlink $0 if File.basename($0) =~ /^\.merge_file_/
+end
+
+
 begin
   while line_nl = gets
     line = line_nl.chomp
