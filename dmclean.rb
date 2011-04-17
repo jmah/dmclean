@@ -1,32 +1,4 @@
 #!/usr/bin/ruby
-#
-# Created by Jonathon Mah on 2011-04-16.
-#
-# dmclean is a text filter, designed to be used with Objective-C files stored
-# in Git. Set it as a gitattributes filter, and then you can use dmclean
-# comment directives in affected source files. If no directives are given, the
-# filter does nothing.
-#
-# Usage:
-#
-#   // <dmclean.strip-whitespace: true>
-# will cause trailing whitespace to be stripped from all subsequent lines.
-#
-#   // <dmclean.filter: BLOCK>
-# BLOCK is a line of Ruby code called with the local variable "lines" bound.
-# The output of this will be printed instead of what appears in the source.
-# Lines are processed until an empty line or a new directive is encountered.
-#
-# For example:
-#   // <dmclean.filter: lines.sort.uniq>
-#   #import "file1.h"
-#   #import "file2.h"
-#   #import "file3.h"
-# This will ensures the imports are uniqued and sorted as they are checked in.
-#
-# If an error is encountered while parsing or running BLOCK, the line will be
-# replaced with // Invalid filter: <dmclean.filter: BLOCK>, and subsequent runs
-# will ignore it (as the "Invalid filter: " text causes it to not match the above.
 
 
 IDENTITY_FILTER = lambda {|lines| lines }
